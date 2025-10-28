@@ -5,19 +5,51 @@ package handler
 
 import (
 	"net/http"
-	"ucenter-api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )
 
-func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
-	server.AddRoutes(
-		[]rest.Route{
-			{
+type Routes struct {
+	server      *rest.Server
+	middlewares []rest.Middleware
+}
+
+func NewRoutes(server *rest.Server) *Routes {
+	return &Routes{
+		server: server,
+	}
+}
+
+func (r *Routes) Get(path string, handlerFunc http.HandlerFunc) {
+	r.server.AddRoutes(
+		// 带有中间件的路由
+		rest.WithMiddlewares(
+			r.middlewares,
+			rest.Route{
 				Method:  http.MethodGet,
-				Path:    "/from/:name",
-				Handler: UcenterapiHandler(serverCtx),
+				Path:    path,
+				Handler: handlerFunc,
 			},
-		},
+		),
 	)
+}
+
+func (r *Routes) Post(path string, handlerFunc http.HandlerFunc) {
+	r.server.AddRoutes(
+		// 带有中间件的路由
+		rest.WithMiddlewares(
+			r.middlewares,
+			rest.Route{
+				Method:  http.MethodPost,
+				Path:    path,
+				Handler: handlerFunc,
+			},
+		),
+	)
+}
+
+func (r *Routes) Group() *Routes {
+	return &Routes{
+		server: r.server,
+	}
 }
