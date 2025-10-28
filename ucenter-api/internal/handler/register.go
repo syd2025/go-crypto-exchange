@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"common"
 	"net/http"
 	"ucenter-api/internal/logic"
 	"ucenter-api/internal/svc"
@@ -27,10 +28,7 @@ func (h *RegisterHandler) Register(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	l := logic.NewRegisterLogic(r.Context(), h.svcCtx)
-	resp, err := l.Register(&req)
-	if err != nil {
-		httpx.ErrorCtx(r.Context(), w, err)
-	} else {
-		httpx.OkJsonCtx(r.Context(), w, resp)
-	}
+	resp, _ := l.Register(&req)
+	result := common.NewResult().Deal(resp, nil)
+	httpx.OkJsonCtx(r.Context(), w, result)
 }

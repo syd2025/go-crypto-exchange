@@ -9,5 +9,4 @@ func RegisterHandlers(r *Routes, serverCtx *svc.ServiceContext) {
 
 	registerGroup := r.Group()
 	registerGroup.Get("/uc/register/phone", regiser.Register)
-
 }

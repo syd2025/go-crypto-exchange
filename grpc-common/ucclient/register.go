@@ -2,7 +2,7 @@
 // goctl 1.9.0
 // Source: register.proto
 
-package register_client
+package ucclient
 
 import (
 	"context"
