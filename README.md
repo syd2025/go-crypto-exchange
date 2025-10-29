@@ -1,4 +1,4 @@
-# go-exchange
+# go-crypto-exchange
 
 基于 go-zero 微服务的加密货币交易所
 
