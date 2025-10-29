@@ -1,21 +1,26 @@
-version: '3.8'
-
 services:
   etcd:
-    image: quay.io/coreos/etcd:v3.5.15
     container_name: etcd
-    restart: always
+    image: quay.io/coreos/etcd:v3.5.12
     environment:
-      - ALLOW_NONE_AUTHENTICATION=yes
-      - ETCD_NAME=etcd-node
-      - ETCD_DATA_DIR=/etcd-data
-      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_NAME=etcd
+      - ETCD_DATA_DIR=/var/etcd
       - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
-    ports:
-      - "2379:2379"
-      - "2380:2380"
+      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380
+      - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://0.0.0.0:2380
+      - ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster
+      - ETCD_INITIAL_CLUSTER=etcd-s1=http://0.0.0.0:2380
+      - ETCD_INITIAL_CLUSTER_STATE=new
+      - ETCD_LOGGER=zap
+      - ETCD_LOG_LeveL=info
     volumes:
-      - ./data/etcd:/etcddata
+      - ./data/etcd/data:/var/etcd
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 2379:2379
+      - 2380:2380
+    restart: always
   redis:
     image: redis:7.4
     container_name: redis
@@ -43,3 +48,8 @@ services:
       --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./data/mysql:/var/lib/mysql  # 用 Docker Volume 替代挂载目录
+
+networks:
+  default:
+    name: etcd-tier
+    driver: bridge
