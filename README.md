@@ -17,6 +17,8 @@
 # 生成 RPC 服务代码
 goctl rpc protoc register.proto --go_out=./types --go-grpc_out=./types --zrpc_out=./register --style go_zero
 
+protoc register.proto --go_out=./types --go-grpc_out=./types
+
 # 创建用户中心服务 api 服务
 goctl api new ucenterapi --style go_zero
 ```

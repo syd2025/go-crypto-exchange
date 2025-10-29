@@ -9,6 +9,7 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 )
 
+// 网络请求的方法和路由结构体
 type Routes struct {
 	server      *rest.Server
 	middlewares []rest.Middleware

@@ -25,6 +25,7 @@ func (r *Result) Success(data any) {
 	r.Data = data
 }
 
+// 可以根据自定义的code和msg设置结果
 func (r *Result) Deal(data any, err error) *Result {
 	if err != nil {
 		r.Fail(-999, err.Error())

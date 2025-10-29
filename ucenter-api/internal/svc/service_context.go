@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"grpc-common/ucclient"
+	"grpc-common/ucenter/ucclient"
 	"ucenter-api/internal/config"
 
 	"github.com/zeromicro/go-zero/zrpc"

@@ -2,5 +2,10 @@ Name: ucenter.rpc
 ListenOn: 127.0.0.1:8081
 Etcd:
   Hosts:
-  - 127.0.0.1:2379
+  - 192.168.8.42:2379
   Key: ucenter.rpc
+Mysql:
+  DataSource: root:root@tcp(192.168.8.42:3309)/mydb?charset=utf8mb4&parseTime=True&loc=Asia%2FShanghai
+CacheRedis:
+  - Host: 192.168.8.42:6379
+    Type: node
