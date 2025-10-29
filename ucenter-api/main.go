@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"ucenter-api/internal/config"
 	"ucenter-api/internal/handler"
 	"ucenter-api/internal/svc"
@@ -25,7 +26,9 @@ func main() {
 	conf.MustLoad(*configFile, &c)
 
 	// 加载配置文件
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(func(header http.Header) {
+		header.Set("Access-Control-Allow-Headers", "DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,X-Token,X-UID,X-SID,X-SID-Sign")
+	}, nil, "http://localhost:8080"))
 	defer server.Stop()
 
 	// 创建服务上下文

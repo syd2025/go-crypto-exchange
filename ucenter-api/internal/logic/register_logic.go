@@ -8,6 +8,7 @@ import (
 	"ucenter-api/internal/svc"
 	"ucenter-api/internal/types"
 
+	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -28,7 +29,12 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 func (l *RegisterLogic) Register(req *types.Request) (resp *types.Response, err error) {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancelFunc()
-	_, err = l.svcCtx.URegisterRpc.RegisterByPhone(ctx, &register.RegReq{})
+
+	regReq := &register.RegReq{}
+	if err = copier.Copy(regReq, req); err != nil {
+		return nil, err
+	}
+	_, err = l.svcCtx.URegisterRpc.RegisterByPhone(ctx, regReq)
 	if err != nil {
 		return nil, err
 	}

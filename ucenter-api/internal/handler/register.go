@@ -2,6 +2,8 @@ package handler
 
 import (
 	"common"
+	"common/tools"
+	"errors"
 	"net/http"
 	"ucenter-api/internal/logic"
 	"ucenter-api/internal/svc"
@@ -28,6 +30,13 @@ func (h *RegisterHandler) Register(w http.ResponseWriter, r *http.Request) {
 		httpx.ErrorCtx(r.Context(), w, err)
 		return
 	}
+	newResult := common.NewResult()
+	if req.Captcha == "" {
+		httpx.OkJsonCtx(r.Context(), w, newResult.Deal(nil, errors.New("人机验证不通过")))
+		return
+	}
+
+	req.Ip = tools.GetRemoteClientIp(r)
 
 	l := logic.NewRegisterLogic(r.Context(), h.svcCtx)
 	resp, _ := l.Register(&req)

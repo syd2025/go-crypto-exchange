@@ -31,6 +31,7 @@ type RegReq struct {
 	Code          string                 `protobuf:"bytes,6,opt,name=code,proto3" json:"code,omitempty"`
 	Country       string                 `protobuf:"bytes,7,opt,name=country,proto3" json:"country,omitempty"`
 	SuperPartner  string                 `protobuf:"bytes,8,opt,name=superPartner,proto3" json:"superPartner,omitempty"`
+	Ip            string                 `protobuf:"bytes,9,opt,name=ip,proto3" json:"ip,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -117,6 +118,13 @@ func (x *RegReq) GetCountry() string {
 func (x *RegReq) GetSuperPartner() string {
 	if x != nil {
 		return x.SuperPartner
+	}
+	return ""
+}
+
+func (x *RegReq) GetIp() string {
+	if x != nil {
+		return x.Ip
 	}
 	return ""
 }
@@ -301,7 +309,7 @@ var File_register_proto protoreflect.FileDescriptor
 
 const file_register_proto_rawDesc = "" +
 	"\n" +
-	"\x0eregister.proto\x12\bregister\"\xf5\x01\n" +
+	"\x0eregister.proto\x12\bregister\"\x85\x02\n" +
 	"\x06RegReq\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12-\n" +
@@ -310,7 +318,8 @@ const file_register_proto_rawDesc = "" +
 	"\tpromotion\x18\x05 \x01(\tR\tpromotion\x12\x12\n" +
 	"\x04code\x18\x06 \x01(\tR\x04code\x12\x18\n" +
 	"\acountry\x18\a \x01(\tR\acountry\x12\"\n" +
-	"\fsuperPartner\x18\b \x01(\tR\fsuperPartner\"9\n" +
+	"\fsuperPartner\x18\b \x01(\tR\fsuperPartner\x12\x0e\n" +
+	"\x02ip\x18\t \x01(\tR\x02ip\"9\n" +
 	"\tCatchaReq\x12\x16\n" +
 	"\x06server\x18\x01 \x01(\tR\x06server\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\"\b\n" +

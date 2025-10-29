@@ -6,6 +6,7 @@ import (
 	"errors"
 	"grpc-common/ucenter/types/register"
 	"time"
+	"ucenter/internal/domain"
 	"ucenter/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -17,18 +18,31 @@ type RegisterLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
+	CaptchaDomain *domain.CaptchaDomain
 }
 
 func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegisterLogic {
 	return &RegisterLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
+		ctx:           ctx,
+		svcCtx:        svcCtx,
+		Logger:        logx.WithContext(ctx),
+		CaptchaDomain: domain.NewCaptchaDomain(),
 	}
 }
 
 func (l *RegisterLogic) RegisterByPhone(in *register.RegReq) (*register.RegRes, error) {
-	logx.Info("ucenter rpc register by phone call")
+	// 1.检验人机校验
+	isVerify := l.CaptchaDomain.Verify(
+		in.Captcha.Server,
+		l.svcCtx.Config.Captcha.Vid,
+		l.svcCtx.Config.Captcha.Key,
+		in.Captcha.Token,
+		2,
+		in.Ip)
+	if !isVerify {
+		return nil, errors.New("人机校验失败")
+	}
+	logx.Info("人机校验通过....")
 	return &register.RegRes{}, nil
 }
 

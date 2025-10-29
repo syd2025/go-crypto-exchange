@@ -9,6 +9,12 @@ type Config struct {
 	zrpc.RpcServerConf
 	Mysql      MysqlConfig
 	CacheRedis cache.CacheConf
+	Captcha    CaptchaConfig
+}
+
+type CaptchaConfig struct {
+	Vid string
+	Key string
 }
 
 type MysqlConfig struct {
