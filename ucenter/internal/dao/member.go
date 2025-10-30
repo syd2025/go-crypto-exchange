@@ -28,3 +28,9 @@ func (m *MemberDao) FindByPhone(ctx context.Context, phone string) (*model.Membe
 	}
 	return mem, nil
 }
+
+func (m *MemberDao) Save(ctx context.Context, mem *model.Member) error {
+	session := m.conn.Session(ctx)
+	err := session.Save(mem).Error
+	return err
+}

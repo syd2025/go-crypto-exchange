@@ -7,7 +7,10 @@ import (
 // 路有设置
 func RegisterHandlers(r *Routes, serverCtx *svc.ServiceContext) {
 	register := NewRegisterHandler(serverCtx)
-
 	registerGroup := r.Group()
 	registerGroup.Get("/uc/register/phone", register.Register)
+
+	login := NewRegisterHandler(serverCtx)
+	loginGroup := r.Group()
+	loginGroup.Post("/uc/register/phone", login.Login)
 }

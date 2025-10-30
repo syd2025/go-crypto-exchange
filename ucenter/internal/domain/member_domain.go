@@ -2,6 +2,7 @@ package domain
 
 import (
 	"common/msdb"
+	"common/tools"
 	"context"
 	"ucenter/internal/dao"
 	"ucenter/internal/model"
@@ -12,6 +13,32 @@ import (
 
 type MemberDomain struct {
 	MemberRepo repo.MemberRepo
+}
+
+func (m *MemberDomain) Register(context context.Context, phone string, password string, username string, country string, partner string, promotion string) error {
+	mem := model.NewMember()
+
+	// 对password进行md5加密
+	_ = tools.Default(mem)
+	salt, _, err := tools.HashPasswordWithSalt(password)
+	if err != nil {
+		return err
+	}
+	mem.Username = username
+	mem.Country = country
+	mem.Password = password
+	mem.MobilePhone = phone
+	mem.FillSuperPartner(partner)
+	mem.PromotionCode = promotion
+	mem.MemberLevel = model.GENERAL
+	mem.Salt = salt
+	mem.Avatar = "https://mszlu.oss-cn-shenzhen.aliyuncs.com/avatar/default.png"
+	err = m.MemberRepo.Save(context, mem)
+	if err != nil {
+		logx.Error(err)
+		return err
+	}
+	return nil
 }
 
 func NewMemberDomain(db *msdb.MsDB) *MemberDomain {
