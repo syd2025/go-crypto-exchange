@@ -19,6 +19,7 @@ type RegisterLogic struct {
 	svcCtx *svc.ServiceContext
 	logx.Logger
 	CaptchaDomain *domain.CaptchaDomain
+	MemberDomain  *domain.MemberDomain
 }
 
 func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegisterLogic {
@@ -27,6 +28,7 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 		svcCtx:        svcCtx,
 		Logger:        logx.WithContext(ctx),
 		CaptchaDomain: domain.NewCaptchaDomain(),
+		MemberDomain:  domain.NewMemberDomain(svcCtx.Db),
 	}
 }
 
@@ -42,7 +44,25 @@ func (l *RegisterLogic) RegisterByPhone(in *register.RegReq) (*register.RegRes, 
 	if !isVerify {
 		return nil, errors.New("人机校验失败")
 	}
-	logx.Info("人机校验通过....")
+
+	// 校验成功
+	redisValue := ""
+	err := l.svcCtx.Cache.GetCtx(context.Background(), RegisterCacheKey+in.Phone, &redisValue)
+	if err != nil {
+		return nil, errors.New("验证码发送错误")
+	}
+	if in.Code == redisValue {
+		return nil, errors.New("验证码输入错误")
+	}
+
+	// 注册用户
+	mem, err := l.MemberDomain.FindByPhone(context.Background(), in.Phone)
+	if err != nil {
+		return nil, errors.New("服务异常，请联系管理员")
+	}
+	if mem != nil {
+		return nil, errors.New("用户已存在")
+	}
 	return &register.RegRes{}, nil
 }
 

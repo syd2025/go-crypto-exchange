@@ -21,6 +21,6 @@ func InitGorm(dsn string) *msdb.MsDB {
 	db.SetMaxOpenConns(100)
 	db.SetMaxIdleConns(10)
 	return &msdb.MsDB{
-		DB: _db,
+		Conn: _db,
 	}
 }

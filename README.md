@@ -21,4 +21,7 @@ protoc register.proto --go_out=./types --go-grpc_out=./types
 
 # 创建用户中心服务 api 服务
 goctl api new ucenterapi --style go_zero
+
+# 同步数据库
+goctl model mysql datasource --url="root:root@tcp(127.0.0.1:3306)/mscoin" --table="member" -c --dir .
 ```
