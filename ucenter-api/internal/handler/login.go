@@ -1,9 +1,12 @@
 package handler
 
 import (
-	"context"
+	"common"
+	"net/http"
 	"ucenter-api/internal/svc"
 	"ucenter-api/internal/types"
+
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
 type LoginHandler struct {
@@ -16,11 +19,12 @@ func NewLoginHandler(svcCtx *svc.ServiceContext) *LoginHandler {
 	}
 }
 
-func (h *LoginHandler) Login(ctx context.Context, req types.LoginReq) (resp *types.LoginResp, err error) {
-	return &types.LoginResp{
-		Id:     1,
-		Name:   "sonny",
-		Gender: "male",
-		Age:    20,
-	}, nil
+func (h *LoginHandler) Login(w http.ResponseWriter, r *http.Request) {
+	var req types.LoginReq
+	if err := httpx.ParseJsonBody(r, &req); err != nil {
+		httpx.ErrorCtx(r.Context(), w, err)
+		return
+	}
+
+	newResult := common.NewResult()
 }
