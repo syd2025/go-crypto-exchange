@@ -21,9 +21,9 @@ message CatchaReq {
     string token = 2;
 }
 
-message RegRes {}
+message RegResp {}
 
-message NoRes {}
+message NoResp {}
 
 message CodeReq{
     string phone = 1;
@@ -31,6 +31,6 @@ message CodeReq{
 }
 
 service Register {
-    rpc registerByPhone(RegReq) returns (RegRes);
-    rpc sendCode(CodeReq) returns (NoRes);
+    rpc registerByPhone(RegReq) returns (RegResp);
+    rpc sendCode(CodeReq) returns (NoResp);
 }

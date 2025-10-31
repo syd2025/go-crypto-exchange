@@ -19,6 +19,8 @@ goctl rpc protoc register.proto --go_out=./types --go-grpc_out=./types --zrpc_ou
 
 protoc register.proto --go_out=./types --go-grpc_out=./types
 
+protoc login.proto --go_out=./types --go-grpc_out=./types
+
 # 创建用户中心服务 api 服务
 goctl api new ucenterapi --style go_zero
 

@@ -27,8 +27,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RegisterClient interface {
-	RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegRes, error)
-	SendCode(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*NoRes, error)
+	RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegResp, error)
+	SendCode(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*NoResp, error)
 }
 
 type registerClient struct {
@@ -39,9 +39,9 @@ func NewRegisterClient(cc grpc.ClientConnInterface) RegisterClient {
 	return &registerClient{cc}
 }
 
-func (c *registerClient) RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegRes, error) {
+func (c *registerClient) RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RegRes)
+	out := new(RegResp)
 	err := c.cc.Invoke(ctx, Register_RegisterByPhone_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -49,9 +49,9 @@ func (c *registerClient) RegisterByPhone(ctx context.Context, in *RegReq, opts .
 	return out, nil
 }
 
-func (c *registerClient) SendCode(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*NoRes, error) {
+func (c *registerClient) SendCode(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*NoResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(NoRes)
+	out := new(NoResp)
 	err := c.cc.Invoke(ctx, Register_SendCode_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -63,8 +63,8 @@ func (c *registerClient) SendCode(ctx context.Context, in *CodeReq, opts ...grpc
 // All implementations must embed UnimplementedRegisterServer
 // for forward compatibility.
 type RegisterServer interface {
-	RegisterByPhone(context.Context, *RegReq) (*RegRes, error)
-	SendCode(context.Context, *CodeReq) (*NoRes, error)
+	RegisterByPhone(context.Context, *RegReq) (*RegResp, error)
+	SendCode(context.Context, *CodeReq) (*NoResp, error)
 	mustEmbedUnimplementedRegisterServer()
 }
 
@@ -75,10 +75,10 @@ type RegisterServer interface {
 // pointer dereference when methods are called.
 type UnimplementedRegisterServer struct{}
 
-func (UnimplementedRegisterServer) RegisterByPhone(context.Context, *RegReq) (*RegRes, error) {
+func (UnimplementedRegisterServer) RegisterByPhone(context.Context, *RegReq) (*RegResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterByPhone not implemented")
 }
-func (UnimplementedRegisterServer) SendCode(context.Context, *CodeReq) (*NoRes, error) {
+func (UnimplementedRegisterServer) SendCode(context.Context, *CodeReq) (*NoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendCode not implemented")
 }
 func (UnimplementedRegisterServer) mustEmbedUnimplementedRegisterServer() {}

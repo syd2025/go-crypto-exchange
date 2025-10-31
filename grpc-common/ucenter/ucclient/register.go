@@ -15,9 +15,9 @@ import (
 type (
 	CatchaReq = register.CatchaReq
 	RegReq    = register.RegReq
-	RegRes    = register.RegRes
+	RegRes    = register.RegResp
 	CodeReq   = register.CodeReq
-	NoRes     = register.NoRes
+	NoRes     = register.NoResp
 
 	Register interface {
 		RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegRes, error)

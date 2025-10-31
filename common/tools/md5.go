@@ -27,7 +27,7 @@ func generateSalt(length int) (string, error) {
 }
 
 // HashPasswordWithSalt 对密码进行加盐MD5加密
-func HashPasswordWithSalt(password string) (salt string, hash string, err error) {
+func Encode(password string) (salt string, hash string, err error) {
 	salt, err = generateSalt(8) // 8字节盐值
 	if err != nil {
 		return "", "", err
@@ -36,4 +36,14 @@ func HashPasswordWithSalt(password string) (salt string, hash string, err error)
 	io.WriteString(h, password+salt)
 	hash = hex.EncodeToString(h.Sum(nil))
 	return salt, hash, nil
+}
+
+func Decode(hash string, salt string, encodeStr string) bool {
+	// todo
+	return true
+}
+
+func ParseToken(token string, secret string) (int64, error) {
+	//todo
+	return 12345, nil
 }
