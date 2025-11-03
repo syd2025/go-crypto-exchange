@@ -21,7 +21,7 @@ var configFile = flag.String("f", "etc/conf.yaml", "the config file")
 
 func main() {
 	flag.Parse()
-
+	// 设置日志格式
 	logx.MustSetup(logx.LogConf{
 		Stat:     false,
 		Encoding: "plain",
