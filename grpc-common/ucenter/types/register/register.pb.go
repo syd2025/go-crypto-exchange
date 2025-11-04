@@ -31,6 +31,7 @@ type RegReq struct {
 	Code          string                 `protobuf:"bytes,6,opt,name=code,proto3" json:"code,omitempty"`
 	Country       string                 `protobuf:"bytes,7,opt,name=country,proto3" json:"country,omitempty"`
 	SuperPartner  string                 `protobuf:"bytes,8,opt,name=superPartner,proto3" json:"superPartner,omitempty"`
+	Ip            string                 `protobuf:"bytes,9,opt,name=ip,proto3" json:"ip,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -117,6 +118,13 @@ func (x *RegReq) GetCountry() string {
 func (x *RegReq) GetSuperPartner() string {
 	if x != nil {
 		return x.SuperPartner
+	}
+	return ""
+}
+
+func (x *RegReq) GetIp() string {
+	if x != nil {
+		return x.Ip
 	}
 	return ""
 }
@@ -209,11 +217,99 @@ func (*RegRes) Descriptor() ([]byte, []int) {
 	return file_register_proto_rawDescGZIP(), []int{2}
 }
 
+type CodeReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Phone         string                 `protobuf:"bytes,1,opt,name=phone,proto3" json:"phone,omitempty"`
+	Country       string                 `protobuf:"bytes,2,opt,name=country,proto3" json:"country,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CodeReq) Reset() {
+	*x = CodeReq{}
+	mi := &file_register_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CodeReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CodeReq) ProtoMessage() {}
+
+func (x *CodeReq) ProtoReflect() protoreflect.Message {
+	mi := &file_register_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CodeReq.ProtoReflect.Descriptor instead.
+func (*CodeReq) Descriptor() ([]byte, []int) {
+	return file_register_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CodeReq) GetPhone() string {
+	if x != nil {
+		return x.Phone
+	}
+	return ""
+}
+
+func (x *CodeReq) GetCountry() string {
+	if x != nil {
+		return x.Country
+	}
+	return ""
+}
+
+type NoRes struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NoRes) Reset() {
+	*x = NoRes{}
+	mi := &file_register_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NoRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NoRes) ProtoMessage() {}
+
+func (x *NoRes) ProtoReflect() protoreflect.Message {
+	mi := &file_register_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NoRes.ProtoReflect.Descriptor instead.
+func (*NoRes) Descriptor() ([]byte, []int) {
+	return file_register_proto_rawDescGZIP(), []int{4}
+}
+
 var File_register_proto protoreflect.FileDescriptor
 
 const file_register_proto_rawDesc = "" +
 	"\n" +
-	"\x0eregister.proto\x12\bregister\"\xf6\x01\n" +
+	"\x0eregister.proto\x12\bregister\"\x86\x02\n" +
 	"\x06RegReq\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12.\n" +
@@ -222,14 +318,20 @@ const file_register_proto_rawDesc = "" +
 	"\tpromotion\x18\x05 \x01(\tR\tpromotion\x12\x12\n" +
 	"\x04code\x18\x06 \x01(\tR\x04code\x12\x18\n" +
 	"\acountry\x18\a \x01(\tR\acountry\x12\"\n" +
-	"\fsuperPartner\x18\b \x01(\tR\fsuperPartner\":\n" +
+	"\fsuperPartner\x18\b \x01(\tR\fsuperPartner\x12\x0e\n" +
+	"\x02ip\x18\t \x01(\tR\x02ip\":\n" +
 	"\n" +
 	"CaptchaReq\x12\x16\n" +
 	"\x06server\x18\x01 \x01(\tR\x06server\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\"\b\n" +
-	"\x06RegRes2A\n" +
+	"\x06RegRes\"9\n" +
+	"\aCodeReq\x12\x14\n" +
+	"\x05phone\x18\x01 \x01(\tR\x05phone\x12\x18\n" +
+	"\acountry\x18\x02 \x01(\tR\acountry\"\a\n" +
+	"\x05NoRes2q\n" +
 	"\bRegister\x125\n" +
-	"\x0fregisterByPhone\x12\x10.register.RegReq\x1a\x10.register.RegResB\fZ\n" +
+	"\x0fregisterByPhone\x12\x10.register.RegReq\x1a\x10.register.RegRes\x12.\n" +
+	"\bsendCode\x12\x11.register.CodeReq\x1a\x0f.register.NoResB\fZ\n" +
 	"./registerb\x06proto3"
 
 var (
@@ -244,18 +346,22 @@ func file_register_proto_rawDescGZIP() []byte {
 	return file_register_proto_rawDescData
 }
 
-var file_register_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_register_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_register_proto_goTypes = []any{
 	(*RegReq)(nil),     // 0: register.RegReq
 	(*CaptchaReq)(nil), // 1: register.CaptchaReq
 	(*RegRes)(nil),     // 2: register.RegRes
+	(*CodeReq)(nil),    // 3: register.CodeReq
+	(*NoRes)(nil),      // 4: register.NoRes
 }
 var file_register_proto_depIdxs = []int32{
 	1, // 0: register.RegReq.captcha:type_name -> register.CaptchaReq
 	0, // 1: register.Register.registerByPhone:input_type -> register.RegReq
-	2, // 2: register.Register.registerByPhone:output_type -> register.RegRes
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
+	3, // 2: register.Register.sendCode:input_type -> register.CodeReq
+	2, // 3: register.Register.registerByPhone:output_type -> register.RegRes
+	4, // 4: register.Register.sendCode:output_type -> register.NoRes
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -272,7 +378,7 @@ func file_register_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_register_proto_rawDesc), len(file_register_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -13,6 +13,7 @@ message RegReq {
     string code = 6;
     string country = 7;
     string superPartner = 8;
+    string ip = 9;
 }
 
 message CaptchaReq{
@@ -22,6 +23,16 @@ message CaptchaReq{
 
 message RegRes {}
 
+message CodeReq {
+    string phone = 1;
+    string country = 2;
+}
+
+message NoRes {
+
+}
+
 service Register {
     rpc registerByPhone(RegReq) returns (RegRes) ;
+    rpc sendCode(CodeReq) returns (NoRes);
 }
