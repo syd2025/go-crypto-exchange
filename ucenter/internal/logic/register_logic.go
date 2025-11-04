@@ -30,6 +30,7 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 		svcCtx:        svcCtx,
 		Logger:        logx.WithContext(ctx),
 		CaptchaDomain: domain.NewCaptchaDomain(),
+		MemberDomain:  domain.NewMemberDomain(svcCtx.Db),
 	}
 }
 
@@ -54,7 +55,10 @@ func (l *RegisterLogic) RegisterByPhone(in *register.RegReq) (*register.RegRes, 
 	}
 	// 3. 验证码通过，开始注册
 	// 验证手机号是否注册过
-	mem := l.MemberDomain.FindByPhone(context.Background(), in.Phone)
+	mem, err := l.MemberDomain.FindByPhone(context.Background(), in.Phone)
+	if err != nil {
+		return nil, errors.New("服务异常，请联系管理员")
+	}
 	if mem != nil {
 		return nil, errors.New("手机号已注册")
 	}

@@ -2,7 +2,10 @@ module ucenter-api
 
 go 1.25.3
 
-require github.com/zeromicro/go-zero v1.9.2
+require (
+	github.com/jinzhu/copier v0.4.0
+	github.com/zeromicro/go-zero v1.9.2
+)
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -29,7 +32,6 @@ require (
 	github.com/grafana/pyroscope-go v1.2.7 // indirect
 	github.com/grafana/pyroscope-go/godeltaprof v0.1.9 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
-	github.com/jinzhu/copier v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
