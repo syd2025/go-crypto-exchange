@@ -1,0 +1,14 @@
+Name: ucenter.rpc
+ListenOn: 127.0.0.1:8081
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: ucenter.rpc
+Mysql:
+  DataSource: root:root@tcp(127.0.0.1:3306)/ucenter?charset=utf8mb4&parseTime=True&loc=Local
+CacheRedis:
+  - Host: 127.0.0.1:6379
+    Type: node
+Captcha:
+  Vid: 589438653432njh4542ygr
+  Key: 357fhii485wqeqw9325843jkdjty
