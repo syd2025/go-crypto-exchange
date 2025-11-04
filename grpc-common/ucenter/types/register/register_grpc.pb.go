@@ -20,15 +20,13 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Register_RegisterByPhone_FullMethodName = "/register.Register/registerByPhone"
-	Register_SendCode_FullMethodName        = "/register.Register/sendCode"
 )
 
 // RegisterClient is the client API for Register service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RegisterClient interface {
-	RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegResp, error)
-	SendCode(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*NoResp, error)
+	RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegRes, error)
 }
 
 type registerClient struct {
@@ -39,20 +37,10 @@ func NewRegisterClient(cc grpc.ClientConnInterface) RegisterClient {
 	return &registerClient{cc}
 }
 
-func (c *registerClient) RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegResp, error) {
+func (c *registerClient) RegisterByPhone(ctx context.Context, in *RegReq, opts ...grpc.CallOption) (*RegRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RegResp)
+	out := new(RegRes)
 	err := c.cc.Invoke(ctx, Register_RegisterByPhone_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *registerClient) SendCode(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*NoResp, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(NoResp)
-	err := c.cc.Invoke(ctx, Register_SendCode_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,8 +51,7 @@ func (c *registerClient) SendCode(ctx context.Context, in *CodeReq, opts ...grpc
 // All implementations must embed UnimplementedRegisterServer
 // for forward compatibility.
 type RegisterServer interface {
-	RegisterByPhone(context.Context, *RegReq) (*RegResp, error)
-	SendCode(context.Context, *CodeReq) (*NoResp, error)
+	RegisterByPhone(context.Context, *RegReq) (*RegRes, error)
 	mustEmbedUnimplementedRegisterServer()
 }
 
@@ -75,11 +62,8 @@ type RegisterServer interface {
 // pointer dereference when methods are called.
 type UnimplementedRegisterServer struct{}
 
-func (UnimplementedRegisterServer) RegisterByPhone(context.Context, *RegReq) (*RegResp, error) {
+func (UnimplementedRegisterServer) RegisterByPhone(context.Context, *RegReq) (*RegRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterByPhone not implemented")
-}
-func (UnimplementedRegisterServer) SendCode(context.Context, *CodeReq) (*NoResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendCode not implemented")
 }
 func (UnimplementedRegisterServer) mustEmbedUnimplementedRegisterServer() {}
 func (UnimplementedRegisterServer) testEmbeddedByValue()                  {}
@@ -120,24 +104,6 @@ func _Register_RegisterByPhone_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Register_SendCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CodeReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(RegisterServer).SendCode(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Register_SendCode_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RegisterServer).SendCode(ctx, req.(*CodeReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Register_ServiceDesc is the grpc.ServiceDesc for Register service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -148,10 +114,6 @@ var Register_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "registerByPhone",
 			Handler:    _Register_RegisterByPhone_Handler,
-		},
-		{
-			MethodName: "sendCode",
-			Handler:    _Register_SendCode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
