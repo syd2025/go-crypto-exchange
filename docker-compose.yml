@@ -1,7 +1,7 @@
 services:
   etcd:
     container_name: etcd
-    image: quay.io/coreos/etcd:v3.5.12
+    image: quay.io/coreos/etcd:v3.5.15
     environment:
       - ETCD_NAME=etcd
       - ETCD_DATA_DIR=/var/etcd
@@ -22,7 +22,7 @@ services:
       - 2380:2380
     restart: always
   redis:
-    image: redis:7.4
+    image: redis:latest
     container_name: redis
     restart: always
     ports:
@@ -32,24 +32,35 @@ services:
       - ./data/redis/conf/redis.conf:/etc/redis/redis.conf
     command: ["redis-server", "/etc/redis/redis.conf"]
   mysql:
-    image: mysql:8.0
-    container_name: mysql
-    restart: always
+    image: mysql:latest  # 指定MySQL版本[citation:1][citation:2][citation:7]
+    container_name: mysql-container  # 自定义容器名称[citation:1]
+    restart: unless-stopped  # 自动重启策略[citation:2]
     environment:
-      MYSQL_ROOT_PASSWORD: 123456     # root账号密码
-      MYSQL_DATABASE: mydb                # 初始化数据库
-      MYSQL_USER: myuser                  # 新建用户
-      MYSQL_PASSWORD: mypass123           # 新建用户密码
-      TZ: Asia/Shanghai                   # 设置时区
+      MYSQL_ROOT_PASSWORD: iam59!z$  # 🔐 设置root密码[citation:1][citation:2][citation:4]
+      MYSQL_DATABASE: iam  # 🗃️ 可选：初始化数据库[citation:1][citation:7]
+      MYSQL_USER: admin  # 👤 可选：创建普通用户[citation:1][citation:7]
+      MYSQL_PASSWORD: iam59!z$  # 🔐 普通用户密码[citation:1][citation:7]
     ports:
-      - "3309:3306"
-    command:
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_unicode_ci
+      - "3306:3306"  # 主机端口:容器端口映射[citation:1][citation:2][citation:4]
     volumes:
-      - ./data/mysql:/var/lib/mysql  # 用 Docker Volume 替代挂载目录
-
+      - mysql_data:/var/lib/mysql  # 💾 数据持久化：使用命名卷[citation:1][citation:2]
+      - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro  # ⚙️ 挂载自定义配置文件[citation:2][citation:7]
+  mongo:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo-dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: iam59!z$
+      MONGO_INITDB_DATABASE: admin
+    volumes:
+      - mongo-data:/data/db
 networks:
   default:
     name: etcd-tier
     driver: bridge
+volumes:
+  mysql_data:  # 声明命名卷，用于数据持久化[citation:1]
+  mongo-data:
