@@ -7,7 +7,7 @@
 - grpc-common // grpc 公共服务
 - ucenter // 用户中心服务
 - ucenter-api // 用户中心 API 网关服务
-- common // 公共模块
+- mscoin-common // 公共模块
 
 ## 项目内容
 
@@ -26,4 +26,6 @@ goctl api new ucenterapi --style go_zero
 
 # 同步数据库
 goctl model mysql datasource --url="root:root@tcp(127.0.0.1:3306)/mscoin" --table="member" -c --dir .
+
+# 注册
 ```

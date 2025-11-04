@@ -62,6 +62,20 @@ func (l *RegisterLogic) RegisterByPhone(in *register.RegReq) (*register.RegRes, 
 	if mem != nil {
 		return nil, errors.New("手机号已注册")
 	}
+	// 4. 注册
+	err = l.MemberDomain.Register(
+		context.Background(),
+		in.Phone,
+		in.Password,
+		in.Username,
+		in.Country,
+		in.SuperPartner,
+		in.Promotion,
+	)
+
+	if err != nil {
+		return nil, errors.New("服务异常，请联系管理员")
+	}
 	return &register.RegRes{}, nil
 }
 
