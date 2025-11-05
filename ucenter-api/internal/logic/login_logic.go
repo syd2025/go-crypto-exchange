@@ -43,5 +43,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	if err := copier.Copy(resp, loginResp); err != nil {
 		return nil, err
 	}
+	}
+>>>>>>> 4d887063075012851781eb716168aaf3f98af7ee
 	return
 }
