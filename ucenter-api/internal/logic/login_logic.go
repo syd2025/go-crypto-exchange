@@ -6,6 +6,7 @@ package logic
 import (
 	"context"
 	"grpc-common/ucenter/types/login"
+	"mscoin-common/tools"
 	"time"
 	"ucenter-api/internal/svc"
 	"ucenter-api/internal/types"
@@ -43,5 +44,16 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	if err := copier.Copy(resp, loginResp); err != nil {
 		return nil, err
 	}
-	return resp, nil
+
+	return &types.LoginResp{}, nil
+}
+
+func (l *LoginLogic) CheckLogin(token string) (bool, error) {
+	_, err := tools.ParseToken(token, l.svcCtx.Config.JWT.AccessSecret)
+	if err != nil {
+		logx.Error(err)
+		return false, err
+	}
+
+	return true, nil
 }
