@@ -61,4 +61,9 @@ func Encode(rawPwd string, options *Options) (string, string) {
 	return string(salt), hex.EncodeToString(encodedPwd)
 }
 
-func Decode() {}
+func Verify(rawPwd string, salt string, encodedPwd string, options *Options) bool {
+	if options == nil {
+		return encodedPwd == hex.EncodeToString(pbkdf2.Key([]byte(rawPwd), []byte(salt), defaultIterations, defaultKeyLen, defaultHashFunction))
+	}
+	return encodedPwd == hex.EncodeToString(pbkdf2.Key([]byte(rawPwd), []byte(salt), options.Iterations, options.KeyLen, options.HashFunction))
+}

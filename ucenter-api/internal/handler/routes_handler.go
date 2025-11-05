@@ -7,10 +7,13 @@ import (
 	"ucenter-api/internal/svc"
 )
 
-func RegisterHandlers(handler *Routers, serverCtx *svc.ServiceContext) {
+func RegisteHandlers(handler *Routers, serverCtx *svc.ServiceContext) {
 	register := NewRegisterHandler(serverCtx)
-
 	registerGroup := handler.Group()
 	registerGroup.Get("/uc/register/phone", register.Register)
 	registerGroup.Post("/uc/mobile/code", register.SendCode)
+
+	loginGroup := handler.Group()
+	login := NewLoginHandler(serverCtx)
+	loginGroup.Post("/uc/login/", login.Login)
 }

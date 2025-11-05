@@ -33,3 +33,8 @@ func (m MemberDao) Save(ctx context.Context, mem *model.Member) error {
 	session := m.conn.Session(ctx)
 	return session.Model(&model.Member{}).Save(mem).Error
 }
+
+func (m MemberDao) UpdateLoginCount(ctx context.Context, id int64, step int) error {
+	session := m.conn.Session(ctx)
+	return session.Model(&model.Member{}).Where("id = ?", id).Update("login_count", gorm.Expr("login_count + ?", step)).Error
+}

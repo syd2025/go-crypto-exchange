@@ -53,7 +53,17 @@ func (d *MemberDomain) Register(
 	mem.PromotionCode = promotion
 	mem.MemberLevel = model.GENERAL
 	mem.Salt = salt
+	mem.Avatar = "https://mscoin-1258344699.cos.ap-guangzhou.myqcloud.com/avatar/default.png"
 	err := d.MemberRepo.Save(ctx, mem)
+	if err != nil {
+		logx.Error(err)
+		return errors.New("数据库异常")
+	}
+	return nil
+}
+
+func (d *MemberDomain) UpdateLoginCount(ctx context.Context, id int64, step int) error {
+	err := d.MemberRepo.UpdateLoginCount(ctx, id, step)
 	if err != nil {
 		logx.Error(err)
 		return errors.New("数据库异常")

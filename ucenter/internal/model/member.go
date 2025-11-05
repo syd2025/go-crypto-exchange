@@ -1,7 +1,7 @@
 package model
 
 type Member struct {
-	Id                          int64   `gorm:"column:id"`
+	Id                          string  `gorm:"column:id"`
 	AliNo                       string  `gorm:"column:ali_no"`
 	QrCodeUrl                   string  `gorm:"column:qr_code_url"`
 	AppealTimes                 int64   `gorm:"column:appeal_times"`
@@ -114,4 +114,17 @@ func (m *Member) MemberLevelStr() string {
 		return "认证会员"
 	}
 	return ""
+}
+
+func (m *Member) MemberRate() int32 {
+	if m.SuperPartner == NORMALPARTER {
+		return 0
+	}
+	if m.SuperPartner == SUPERPARTER {
+		return 1
+	}
+	if m.SuperPartner == PSUPERPARTER {
+		return 2
+	}
+	return 0
 }
