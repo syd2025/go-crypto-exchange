@@ -91,7 +91,7 @@ func (l *LoginLogic) Login(in *login.LoginReq) (*login.LoginResp, error) {
 	}, nil
 }
 
-func (l *LoginLogic) getJwtToken(secretKey string, iat, seconds, userId string) (string, error) {
+func (l *LoginLogic) getJwtToken(secretKey string, iat, seconds, userId int64) (string, error) {
 	claims := make(jwt.MapClaims)
 	claims["exp"] = iat + seconds
 	claims["iat"] = iat

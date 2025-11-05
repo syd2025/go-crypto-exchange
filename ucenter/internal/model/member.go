@@ -1,7 +1,7 @@
 package model
 
 type Member struct {
-	Id                          string  `gorm:"column:id"`
+	Id                          int64   `gorm:"column:id"`
 	AliNo                       string  `gorm:"column:ali_no"`
 	QrCodeUrl                   string  `gorm:"column:qr_code_url"`
 	AppealTimes                 int64   `gorm:"column:appeal_times"`
