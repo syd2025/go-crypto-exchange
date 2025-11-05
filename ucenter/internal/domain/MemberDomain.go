@@ -53,6 +53,7 @@ func (d *MemberDomain) Register(
 	mem.PromotionCode = promotion
 	mem.MemberLevel = model.GENERAL
 	mem.Salt = salt
+	mem.Avatar = "https://mscoin-1258344699.cos.ap-guangzhou.myqcloud.com/avatar/default.png"
 	err := d.MemberRepo.Save(ctx, mem)
 	if err != nil {
 		logx.Error(err)

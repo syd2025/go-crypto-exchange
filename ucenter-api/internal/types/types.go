@@ -31,3 +31,15 @@ type CodeRequest struct {
 
 type CodeResponse struct {
 }
+
+type LoginReq struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Captcha  string `json:"captcha"`
+	Ip       string `json:"ip"`
+}
+
+type LoginResp struct {
+	Username string `json:"username"`
+	Token    string `json:"token"`
+}

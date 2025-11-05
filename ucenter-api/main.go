@@ -35,7 +35,7 @@ func main() {
 
 	ctx := svc.NewServiceContext(c)
 	router := handler.NewRouters(server)
-	handler.RegisterHandlers(router, ctx)
+	handler.RegisteHandlers(router, ctx)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
