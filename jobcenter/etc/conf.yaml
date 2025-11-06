@@ -1,0 +1,11 @@
+Okx:
+  ApiKey: "jwerhi4ht-awrhjweirjt-35465j23534"
+  SecretKey: "3u534j6khj565h76wrewjt4657"
+  Pass: "Mszlu!@#575687"
+  Host: "https://www.okx.com"
+  Proxy: "http://localhost:108090"
+Mongo:
+  Url: "mongodb://localhost:27018"
+  Username: "root"
+  Password: "root123456"
+  DataBase: "mscoin"
