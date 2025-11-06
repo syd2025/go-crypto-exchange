@@ -30,4 +30,5 @@ goctl model mysql datasource --url="root:root@tcp(127.0.0.1:3306)/mscoin" --tabl
 # 注册
 # 登录
 # 行情数据
+通过定期同步行情数据到Mongodb中，重复获取数据，将原来老的数据覆盖掉
 ```
