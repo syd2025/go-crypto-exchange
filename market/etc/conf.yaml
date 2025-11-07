@@ -1,0 +1,13 @@
+Name: market.rpc
+ListenOn: 0.0.0.0:8082
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: market.rpc
+Mysql:
+  DataSource: "root:root123456@tcp(127.0.0.1:3306)/mscoin?charset=utf8mb4&parseTime=True&loc=Local"
+Mongo:
+  Url: "mongodb://127.0.0.1:27017"
+  Username: "root"
+  Password: "root123456"
+  DataBase: "mscoin"
