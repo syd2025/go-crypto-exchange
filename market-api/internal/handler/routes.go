@@ -64,5 +64,6 @@ func (r *Routers) PostNoPrefix(path string, handlerFunc http.HandlerFunc) {
 func (r *Routers) Group() *Routers {
 	return &Routers{
 		server: r.server,
+		prefix: r.prefix,
 	}
 }

@@ -3,6 +3,13 @@ module jobcenter
 go 1.25.3
 
 require (
+	github.com/zeromicro/go-zero v1.7.6
+	mscoin-common v0.0.0
+)
+
+replace mscoin-common => ../mscoin-common
+
+require (
 	github.com/go-co-op/gocron v1.37.0 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.4.0 // indirect

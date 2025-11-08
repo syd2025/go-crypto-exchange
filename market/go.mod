@@ -3,6 +3,13 @@ module market
 go 1.25.3
 
 require (
+	github.com/zeromicro/go-zero v1.7.6
+	grpc-common v0.0.0
+)
+
+replace grpc-common => ../grpc-common
+
+require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect

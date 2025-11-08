@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Market_Ping_FullMethodName = "/market.Market/Ping"
+	Market_FindSymbolThumbTrend_FullMethodName = "/market.Market/FindSymbolThumbTrend"
 )
 
 // MarketClient is the client API for Market service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MarketClient interface {
-	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	FindSymbolThumbTrend(ctx context.Context, in *MarketReq, opts ...grpc.CallOption) (*SymbolThumbRes, error)
 }
 
 type marketClient struct {
@@ -37,10 +37,10 @@ func NewMarketClient(cc grpc.ClientConnInterface) MarketClient {
 	return &marketClient{cc}
 }
 
-func (c *marketClient) Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+func (c *marketClient) FindSymbolThumbTrend(ctx context.Context, in *MarketReq, opts ...grpc.CallOption) (*SymbolThumbRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, Market_Ping_FullMethodName, in, out, cOpts...)
+	out := new(SymbolThumbRes)
+	err := c.cc.Invoke(ctx, Market_FindSymbolThumbTrend_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *marketClient) Ping(ctx context.Context, in *Request, opts ...grpc.CallO
 // All implementations must embed UnimplementedMarketServer
 // for forward compatibility.
 type MarketServer interface {
-	Ping(context.Context, *Request) (*Response, error)
+	FindSymbolThumbTrend(context.Context, *MarketReq) (*SymbolThumbRes, error)
 	mustEmbedUnimplementedMarketServer()
 }
 
@@ -62,8 +62,8 @@ type MarketServer interface {
 // pointer dereference when methods are called.
 type UnimplementedMarketServer struct{}
 
-func (UnimplementedMarketServer) Ping(context.Context, *Request) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+func (UnimplementedMarketServer) FindSymbolThumbTrend(context.Context, *MarketReq) (*SymbolThumbRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindSymbolThumbTrend not implemented")
 }
 func (UnimplementedMarketServer) mustEmbedUnimplementedMarketServer() {}
 func (UnimplementedMarketServer) testEmbeddedByValue()                {}
@@ -86,20 +86,20 @@ func RegisterMarketServer(s grpc.ServiceRegistrar, srv MarketServer) {
 	s.RegisterService(&Market_ServiceDesc, srv)
 }
 
-func _Market_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+func _Market_FindSymbolThumbTrend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MarketReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MarketServer).Ping(ctx, in)
+		return srv.(MarketServer).FindSymbolThumbTrend(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Market_Ping_FullMethodName,
+		FullMethod: Market_FindSymbolThumbTrend_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MarketServer).Ping(ctx, req.(*Request))
+		return srv.(MarketServer).FindSymbolThumbTrend(ctx, req.(*MarketReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -112,8 +112,8 @@ var Market_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*MarketServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Ping",
-			Handler:    _Market_Ping_Handler,
+			MethodName: "FindSymbolThumbTrend",
+			Handler:    _Market_FindSymbolThumbTrend_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

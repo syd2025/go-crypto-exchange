@@ -10,7 +10,11 @@ import (
 
 func RegisteHandlers(handler *Routers, serverCtx *svc.ServiceContext) {
 	rate := NewExchangeRateHandler(context.Background(), serverCtx)
-	registerGroup := handler.Group()
-	registerGroup.Post("/exchange-rate/usd/:unit", rate.UsdRate)
+	rateGroup := handler.Group()
+	rateGroup.Post("/exchange-rate/usd/:unit", rate.UsdRate)
+
+	market := NewMarketHandler(context.Background(), serverCtx)
+	marketGroup := handler.Group()
+	marketGroup.Post("/symbol-thumb-trend", market.SymbolThumbTrend)
 
 }

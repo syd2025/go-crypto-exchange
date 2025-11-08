@@ -23,6 +23,8 @@ protoc login.proto --go_out=./types --go-grpc_out=./types
 
 protoc rate.proto --go_out=./types --go-grpc_out=./types
 
+protoc market.proto --go_out=./types --go-grpc_out=./types
+
 # 创建用户中心服务 api 服务
 goctl api new ucenterapi --style go_zero
 
@@ -33,4 +35,5 @@ goctl model mysql datasource --url="root:root@tcp(127.0.0.1:3306)/mscoin" --tabl
 # 登录
 # 行情数据
 通过定期同步行情数据到Mongodb中，重复获取数据，将原来老的数据覆盖掉
+
 ```
