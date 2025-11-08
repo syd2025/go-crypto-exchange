@@ -28,19 +28,18 @@ func NewExchangeRateHandler(ctx context.Context, svcCtx *svc.ServiceContext) *Ex
 	}
 }
 
-func (h *ExchangeRateHandler) UsdRate(w http.ResponseWriter, r *http.Request) (*types.RateResponse, error) {
+func (h *ExchangeRateHandler) UsdRate(w http.ResponseWriter, r *http.Request) {
 	var req types.RateRequest
 	if err := httpx.ParsePath(r, &req); err != nil {
 		httpx.ErrorCtx(r.Context(), w, err)
-		return nil, err
+		return
 	}
 
 	// 获取一下IP
 	req.Ip = tools.GetRemoteClientIp(r)
 
 	l := logic.NewExchangeRateLogic(r.Context(), h.svcCtx)
-	resp, err := l.UsdRate(req)
+	resp, err := l.UsdRate(&req)
 	result := common.NewResult().Deal(resp.Rate, err)
 	httpx.OkJsonCtx(r.Context(), w, result)
-	return resp, err
 }

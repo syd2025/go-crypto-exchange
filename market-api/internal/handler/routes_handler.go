@@ -4,12 +4,13 @@
 package handler
 
 import (
+	"context"
 	"market-api/internal/svc"
 )
 
 func RegisteHandlers(handler *Routers, serverCtx *svc.ServiceContext) {
-	rate := NewMarketRateHandler(serverCtx)
+	rate := NewExchangeRateHandler(context.Background(), serverCtx)
 	registerGroup := handler.Group()
-	registerGroup.Post("/market/exchange-rate/usd/:unit", rate.UsdRate)
+	registerGroup.Post("/exchange-rate/usd/:unit", rate.UsdRate)
 
 }

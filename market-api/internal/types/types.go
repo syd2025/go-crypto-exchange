@@ -1,8 +1,8 @@
 package types
 
 type RateRequest struct {
-	Unit string `json:"unit"`
-	Ip   string `json:"ip"`
+	Unit string `path:"unit" json:"unit"`
+	Ip   string `json:"ip,omitempty"`
 }
 
 type RateResponse struct {

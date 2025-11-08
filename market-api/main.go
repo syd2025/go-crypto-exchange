@@ -27,6 +27,7 @@ func main() {
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)
+	// 进入到路由
 	router := handler.NewRouters(server, c.Prefix)
 	// server.Use(router.Middleware)
 	handler.RegisteHandlers(router, ctx)
