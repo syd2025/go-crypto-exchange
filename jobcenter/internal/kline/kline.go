@@ -2,23 +2,14 @@ package kline
 
 import (
 	"encoding/json"
-	"jobcenter/internal/database"
+	"jobcenter/internal/config"
 	"jobcenter/internal/domain"
+	"jobcenter/internal/svc"
 	"log"
 	"mscoin-common/tools"
 	"sync"
 	"time"
 )
-
-// var secretKey = "3u534j6khj565h76"
-
-type OkxConfig struct {
-	ApiKey    string
-	SecretKey string
-	Pass      string
-	Host      string
-	Proxy     string
-}
 
 type OkxResult struct {
 	Code string     `json:"code"`
@@ -28,14 +19,16 @@ type OkxResult struct {
 
 type Kline struct {
 	wg          sync.WaitGroup
-	config      OkxConfig
+	config      config.OkxConfig
 	klineDomain *domain.KlineDomain
+	queueDomain *domain.QueueDomain
 }
 
-func NewKline(config OkxConfig, mongoClient *database.MongoClient) *Kline {
+func NewKline(cfg config.OkxConfig, ctx *svc.ServiceContext) *Kline {
 	return &Kline{
-		config:      config,
-		klineDomain: domain.NewKlineDomain(mongoClient),
+		config:      cfg,
+		klineDomain: domain.NewKlineDomain(ctx.MongoClient),
+		queueDomain: domain.NewQueueDomain(ctx.KafkaClient),
 	}
 }
 
@@ -69,6 +62,11 @@ func (k *Kline) getKlineData(instId, symbol, period string) {
 	if result.Code == "0" {
 		// 代表成功
 		k.klineDomain.SaveBatch(result.Data, symbol, period)
+		if period == "1m" {
+			if len(result.Data) > 0 {
+				k.queueDomain.Send1mKline(result.Data[0], symbol)
+			}
+		}
 	}
 	k.wg.Done()
 	log.Println("============end================")
