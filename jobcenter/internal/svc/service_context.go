@@ -12,6 +12,8 @@ type ServiceContext struct {
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	client := database.NewKafkaClient(c.Kafka)
+	client.StartWrite()
 	return &ServiceContext{
 		Config:      c,
 		MongoClient: database.ConnectMongo(c.Mongo),
