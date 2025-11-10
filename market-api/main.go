@@ -6,13 +6,17 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 
 	"market-api/internal/config"
 	"market-api/internal/handler"
 	"market-api/internal/svc"
+	"market-api/internal/ws"
 
 	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/rest"
+	"github.com/zeromicro/go-zero/rest/chain"
 )
 
 var configFile = flag.String("f", "etc/marketapi-api.yaml", "the config file")
@@ -23,14 +27,28 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf)
+	wsServer := ws.NewWebsocketServer("/socket.io")
+
+	server := rest.MustNewServer(
+		c.RestConf,
+		rest.WithChain(chain.New(wsServer.ServerHandler)),
+		rest.WithCustomCors(func(header http.Header) {
+			header.Set("Access-Control-Allow-Headers",
+				"DNT,X-Mx-ReqToken,Keep-Alive")
+		}, nil, "http://localhost:8080"),
+	)
 	defer server.Stop()
 
-	ctx := svc.NewServiceContext(c)
+	ctx := svc.NewServiceContext(c, wsServer)
 	// 进入到路由
 	router := handler.NewRouters(server, c.Prefix)
 	// server.Use(router.Middleware)
 	handler.RegisteHandlers(router, ctx)
+
+	// 启动组服务
+	group := service.NewServiceGroup()
+	group.Add(server)
+	group.Add(wsServer)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()

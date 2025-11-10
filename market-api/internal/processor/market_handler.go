@@ -1,8 +1,11 @@
 package processor
 
-import "market-api/internal/model"
+import (
+	"grpc-common/market/types/market"
+	"market-api/internal/model"
+)
 
 type MarketHandler interface {
 	HandleTrade(symbol string, data []byte)
-	HandleKLine(symbol string, kline *model.Kline)
+	HandleKLine(symbol string, kline *model.Kline, thumpMap map[string]*market.CoinThumb)
 }

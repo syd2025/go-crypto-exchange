@@ -8,6 +8,7 @@ import (
 	"market-api/internal/config"
 	"market-api/internal/database"
 	"market-api/internal/processor"
+	"market-api/internal/ws"
 
 	"github.com/zeromicro/go-zero/zrpc"
 )
@@ -19,12 +20,14 @@ type ServiceContext struct {
 	Processor       processor.Processor
 }
 
-func NewServiceContext(c config.Config) *ServiceContext {
+func NewServiceContext(c config.Config, wsServer *ws.WebsocketServer) *ServiceContext {
 	// 初始化processor
 	kafkaCli := database.NewKafkaClient(c.Kafka)
+	market := mclient.NewMarket(zrpc.MustNewClient(c.MarketRpc))
 	defaultProcessor := processor.NewDefaultProcessor(kafkaCli)
-	defaultProcessor.Init()
-	defaultProcessor.AddHandler(processor.NewWebsocketHandler())
+	defaultProcessor.Init(market)
+	defaultProcessor.AddHandler(processor.NewWebsocketHandler(wsServer))
+
 	return &ServiceContext{
 		Config:          c,
 		ExchangeRateRpc: mclient.NewExchangeRate(zrpc.MustNewClient(c.MarketRpc)),

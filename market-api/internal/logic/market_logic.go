@@ -6,6 +6,7 @@ package logic
 import (
 	"context"
 	"grpc-common/market/mclient"
+	"grpc-common/market/types/market"
 
 	"market-api/internal/svc"
 	"market-api/internal/types"
@@ -30,17 +31,30 @@ func NewMarketLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MarketLogi
 	}
 }
 
-func (l *MarketLogic) SymbolThumbTrend(req *types.MarketReq) ([]*types.CoinThumbResp, error) {
-	symbolThumbRes, err := l.svcCtx.MarketRpc.FindSymbolThumbTrend(l.ctx, &mclient.MarketReq{
-		Ip: req.Ip,
-	})
-	if err != nil {
-		return nil, err
+func (l *MarketLogic) SymbolThumbTrend(req *types.MarketReq) (list []*types.CoinThumbResp, err error) {
+	var thumbs []*market.CoinThumb
+	thumb := l.svcCtx.Processor.GetThumb()
+	isCache := false
+	if thumb != nil {
+		switch thumb.(type) {
+		case []*market.CoinThumb:
+			thumbs = thumb.([]*market.CoinThumb)
+			isCache = true
+		}
 	}
 
-	var list []*types.CoinThumbResp
-	if err := copier.Copy(list, symbolThumbRes.List); err != nil {
+	if !isCache {
+		symbolThumbRes, err := l.svcCtx.MarketRpc.FindSymbolThumbTrend(context.Background(), &mclient.MarketReq{
+			Ip: req.Ip,
+		})
+		if err != nil {
+			return nil, err
+		}
+		thumbs = symbolThumbRes.List
+	}
+
+	if err := copier.Copy(&list, thumbs); err != nil {
 		return nil, err
 	}
-	return list, nil
+	return
 }
