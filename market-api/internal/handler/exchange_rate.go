@@ -4,6 +4,10 @@ import (
 	"context"
 	"market-api/internal/logic"
 	"market-api/internal/svc"
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 	"market-api/internal/types"
 
 	common "mscoin-common"
@@ -28,19 +32,33 @@ func NewExchangeRateHandler(ctx context.Context, svcCtx *svc.ServiceContext) *Ex
 	}
 }
 
+<<<<<<< HEAD
 func (h *ExchangeRateHandler) UsdRate(w http.ResponseWriter, r *http.Request) (*types.RateResponse, error) {
 	var req types.RateRequest
 	if err := httpx.ParsePath(r, &req); err != nil {
 		httpx.ErrorCtx(r.Context(), w, err)
 		return nil, err
+=======
+func (h *ExchangeRateHandler) UsdRate(w http.ResponseWriter, r *http.Request) {
+	var req types.RateRequest
+	if err := httpx.ParsePath(r, &req); err != nil {
+		httpx.ErrorCtx(r.Context(), w, err)
+		return
+>>>>>>> origin/main
 	}
 
 	// 获取一下IP
 	req.Ip = tools.GetRemoteClientIp(r)
 
 	l := logic.NewExchangeRateLogic(r.Context(), h.svcCtx)
+<<<<<<< HEAD
 	resp, err := l.UsdRate(req)
 	result := common.NewResult().Deal(resp.Rate, err)
 	httpx.OkJsonCtx(r.Context(), w, result)
 	return resp, err
+=======
+	resp, err := l.UsdRate(&req)
+	result := common.NewResult().Deal(resp.Rate, err)
+	httpx.OkJsonCtx(r.Context(), w, result)
+>>>>>>> origin/main
 }

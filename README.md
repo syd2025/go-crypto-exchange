@@ -23,6 +23,8 @@ protoc login.proto --go_out=./types --go-grpc_out=./types
 
 protoc rate.proto --go_out=./types --go-grpc_out=./types
 
+protoc market.proto --go_out=./types --go-grpc_out=./types
+
 # 创建用户中心服务 api 服务
 goctl api new ucenterapi --style go_zero
 

@@ -4,12 +4,30 @@
 package handler
 
 import (
+<<<<<<< HEAD
+=======
+	"context"
+>>>>>>> origin/main
 	"market-api/internal/svc"
 )
 
 func RegisteHandlers(handler *Routers, serverCtx *svc.ServiceContext) {
+<<<<<<< HEAD
 	rate := NewMarketRateHandler(serverCtx)
 	registerGroup := handler.Group()
 	registerGroup.Post("/market/exchange-rate/usd/:unit", rate.UsdRate)
 
+=======
+	rate := NewExchangeRateHandler(context.Background(), serverCtx)
+	rateGroup := handler.Group()
+	rateGroup.Post("/exchange-rate/usd/:unit", rate.UsdRate)
+
+	market := NewMarketHandler(context.Background(), serverCtx)
+	marketGroup := handler.Group()
+	marketGroup.Post("/symbol-thumb-trend", market.SymbolThumbTrend)
+
+	websocketGroup := handler.Group()
+	websocketGroup.GetNoPrefix("/socket.io", nil)
+	websocketGroup.PostNoPrefix("/socket.io", nil)
+>>>>>>> origin/main
 }

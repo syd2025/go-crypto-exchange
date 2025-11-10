@@ -8,4 +8,12 @@ Mongo:
   Url: "mongodb://localhost:27018"
   Username: "root"
   Password: "root123456"
+<<<<<<< HEAD
   DataBase: "mscoin"
+=======
+  DataBase: "mscoin"
+Kafka:
+  Addr: localhost:9092
+  WriteCap: 100
+  ReadCap: 100
+>>>>>>> origin/main
